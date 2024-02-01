@@ -1,8 +1,3 @@
-
-<label for="filter">Filter by region: </label>
-<input type="text" name="" id="filter" [(ngModel)]="filterValue">
-<p>{{filterValue}}</p>
-
 <mat-grid-list cols="3"  rowHeight="1:1">
   <mat-grid-tile *ngFor="let item of launchpads2">
     <mat-card class="mt-2" >
@@ -21,38 +16,6 @@
       </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
-
-
-
-<div class="container d-flex p-2">
-  <div class=" demo-data" *ngFor="let item of launchpads">
-    <div> Launchpad id: {{item.id}} </div>
-    <div> Launchpad name: {{item.full_name}} </div>
-    <img width="300px" src="{{item.images.large}}" alt="">
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Expand launches
-        </mat-panel-title>
-        <mat-panel-description>
-          List of all the launches for this launchpad
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-          <mat-list>
-              <ng-container *ngFor="let item3 of launches">
-                <mat-list-item *ngIf="item.id === item3.launchpad && item3.static_fire_date_utc !== null &&  item3.details !== null">
-                  <p matListItemLine>{{item3.static_fire_date_utc}}</p>
-                  <p matListItemLine>{{item3.details}}</p>
-                </mat-list-item>
-              <mat-divider *ngIf="item.id === item3.launchpad && item3.static_fire_date_utc !== null &&  item3.details !== null"></mat-divider>
-            </ng-container>
-          </mat-list>
-    </mat-expansion-panel>
-    
-</div>
-  
-  
-</div>
 
 
 

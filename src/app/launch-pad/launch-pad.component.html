@@ -1,8 +1,25 @@
 
-<p>launch-pad works!</p>
-<div *ngFor="let item of launchpad">
-    <p>
-        {{item.id}}
-    </p>
-</div>
+<h2>{{launchpad.full_name}}</h2>
+<img width="700px" src="{{launchpad.img}}" alt="">
+<p>{{launchpad.details}}</p>
+
+<mat-expansion-panel hideToggle>
+<mat-expansion-panel-header>
+    <mat-panel-title>
+    Expand launches
+    </mat-panel-title>
+    <mat-panel-description>
+    List of all the launches for this launchpad
+    </mat-panel-description>
+</mat-expansion-panel-header>
+    <mat-list>
+        <ng-container *ngFor="let launch of launches2">
+            <mat-list-item *ngIf="launchpad.id === launch.launchpad && launch.date !== null &&  launch.details !== null">
+            <p matListItemLine>{{launch.date}}</p>
+            <p matListItemLine>{{launch.details}}</p>
+            </mat-list-item>
+        <mat-divider *ngIf="launchpad.id === launch.launchpad && launch.date !== null &&  launch.details !== null"></mat-divider>
+        </ng-container>
+    </mat-list>
+</mat-expansion-panel>
 

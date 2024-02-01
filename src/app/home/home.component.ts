@@ -18,18 +18,10 @@ import { DataPassingServiceService } from '../data-passing-service.service';
 })
 export class HomeComponent implements OnInit{
   panelOpenState = true;
-  searchResults : any = [];
-  searchResult: any | null = null;
-
-  mappedLaunches :any[] = [];
-
-  filterValue: string;
   launchpadData$ : any;
   constructor(private apiDataService : ApiServiceService, private router:Router, private dataService:DataPassingServiceService){
-    this.filterValue = ' ';
-    this.pageEvent = new PageEvent();
   }
-  mappedArray : any[] = [];
+  
   mergedData : any;
   firstlink : any;
   launchpads2 : any[] = [];
@@ -37,47 +29,10 @@ export class HomeComponent implements OnInit{
   launches2 : any[] = [];
   launches : any;
 
-  length = 50;
-  pageSize = 10;
-  pageIndex = 0;
-  pageSizeOptions = [5, 10, 25];
-
-  hidePageSize = false;
-  showPageSizeOptions = true;
-  showFirstLastButtons = true;
-  disabled = false;
-
-  pageEvent: PageEvent;
-
-  handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.length = e.length;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-  }
-
-  setPageSizeOptions(setPageSizeOptionsInput: string) {
-    if (setPageSizeOptionsInput) {
-      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
-    }
-  }
-
-  mergeData(): void {
-    if (this.launchpads && this.searchResults) {
-      this.mergedData = this.launchpads.map((item1: { full_name: any; }) => {
-        const matchingItem = this.searchResults.find((item2: { title: any; }) => item1.full_name === item2.title);
-        return { ...item1, ...matchingItem };
-      });
-    }
-  }
-  navigateToNextComponent(item: any): void {
-    // Use router.navigate to navigate with queryParams
-    this.router.navigate(['/lauchpad-component'], { queryParams: { element: item } });
-  }
 
   ngOnInit(): void {
      this.apiDataService.getLaunchpadData().subscribe((firstApiResponse) => {
-      this.launchpads2 = firstApiResponse.map((item: {
+      const launchpads = firstApiResponse.map((item: {
         id : any;
         details: any;
         images: any;
@@ -92,11 +47,12 @@ export class HomeComponent implements OnInit{
         id : item.id,
         name : item.name
       }));
+      this.dataService.setSharedLaunchpads(launchpads);
+      //this.launchpads2 = launchpads;
      })
 
-
      this.apiDataService.getLaunchesData().subscribe((secondApiResponse) =>{
-      this.launches2 = secondApiResponse.map((item: {
+      const launches = secondApiResponse.map((item: {
         details: any;
         static_fire_date_utc: any;
         name: any; 
@@ -109,25 +65,22 @@ export class HomeComponent implements OnInit{
         details: item.details,
         launchpad: item.launchpad
       }));
-     })
+      this.dataService.setSharedLaunches(launches);
+      //this.launches2 = launches;
+    })
 
-
-     this.apiDataService.getLaunchpadData().subscribe((data) => {
-      this.launchpads = data;
-     })
-
-     this.apiDataService.getLaunchesData().subscribe((data) => {
-      this.launches = data;
-     })
-
-     this.apiDataService.wikiSearch('Vandenberg Space Force Base Space Launch Complex 4E').subscribe((data : any) => {
-      this.searchResults = data.query.search;
-     })
-
-     this.dataService.setSharedData(this.launchpads2);
-
-
-
+    this.dataService.getSharedLaunchpads().subscribe(
+      (launchpads) => {
+        // Handle the retrieved launchpads data
+        this.launchpads2 = launchpads;
+      }
+    );
+    this.dataService.getSharedLaunches().subscribe(
+      (launches) => {
+        this.launches2 = launches;
+      }
+    );
   }
+  
 
 }

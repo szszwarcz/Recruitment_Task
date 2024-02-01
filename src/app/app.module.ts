@@ -22,6 +22,7 @@ import { LaunchPadComponent } from './launch-pad/launch-pad.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import {MatTable, MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,10 @@ import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angul
     MatGridListModule,
     RouterOutlet,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    MatTableModule
+
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
