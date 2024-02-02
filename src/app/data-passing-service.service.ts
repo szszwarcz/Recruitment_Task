@@ -91,5 +91,23 @@ export class DataPassingServiceService {
   
     return of(null);
   }
+  getLaunchpadsByNameAndRegion(region: string, name: string): Observable<any | null> {
+    const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
+  
+    if (storedData) {
+      const launches = JSON.parse(storedData);
+      if(region === '' && name === ''){
+        return of(launches || null);
+      }
+      const matchingLaunchpads = launches.filter((item: { name: string, region: string }) =>
+        (name === '' || item.name.toLowerCase().startsWith(name.toLowerCase())) &&
+        (region === '' || item.region.toLowerCase().startsWith(region.toLowerCase()))
+      );
+  
+      return of(matchingLaunchpads || null);
+    }
+  
+    return of(null);
+  }
   
 }

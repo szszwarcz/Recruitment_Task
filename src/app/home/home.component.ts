@@ -113,23 +113,33 @@ export class HomeComponent implements OnInit{
       startIndex + this.pageSize
     );
   }
-  onKey(event: any) : void {
+  onKey(event: any): void {
     this.value = event.target.value;
-    this.dataService.getLaunchpadsByRegion(this.value, this.value2).subscribe((data: any[]) => {
-      this.launchpads2 = data;
-      this.updatePagedLaunchpads(0);
-    })
+    this.performSearch();
   }
-  onKey2(event: any) : void {
+  
+  onKey2(event: any): void {
     this.value2 = event.target.value;
-    this.dataService.getLaunchpadsByName(this.value2, this.value).subscribe((data: any[]) => {
-      this.launchpads2 = data;
-      this.updatePagedLaunchpads(0);
-    })
+    this.performSearch();
   }
-
-
-  updateLaunhpadsSearch(){
-
+  
+  performSearch(): void {
+    if (this.value || this.value2) {
+      this.dataService.getLaunchpadsByNameAndRegion(this.value, this.value2).subscribe((data: any[]) => {
+        this.launchpads2 = data;
+        this.updatePagedLaunchpads(0);
+      });
+    } else {
+      // If both fields are empty, fetch the original data
+      this.fetchData();
+    }
+  }
+  
+  // Add a method to fetch the original data
+  fetchData(): void {
+    this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
+      this.launchpads2 = launchpads;
+      this.updatePagedLaunchpads(0);
+    });
   }
 }
