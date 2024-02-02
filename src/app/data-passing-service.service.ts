@@ -13,14 +13,8 @@ export class DataPassingServiceService {
 
 
   setSharedLaunchpads(launchpads: any[]): Observable<any> {
-
-    console.log('Setting launchpads:', launchpads);
-
     return of(null).pipe(
-      tap(() => {
-        console.log('Inside tap block');
-        localStorage.setItem(this.LAUNCHPADS_STORAGE_KEY, JSON.stringify(launchpads));
-      }),
+      tap(() => localStorage.setItem(this.LAUNCHPADS_STORAGE_KEY, JSON.stringify(launchpads))),
       catchError((error) => {
         console.error('Error saving launchpads:', error);
         return of(null);
@@ -48,19 +42,53 @@ export class DataPassingServiceService {
     return of(storedData ? JSON.parse(storedData) : null);
   }
 
-  
   getLaunchpadById(launchpadId: string): Observable<any | null> {
     const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
     
     if (storedData) {
       const launches = JSON.parse(storedData);
-
-      // Find the launchpad with the specified launchpadId
       const launchpad = launches.find((item: { id: string; }) => item.id === launchpadId);
-
       return of(launchpad || null);
     }
+    return of(null);
+  }
 
+  getLaunchpadsByRegion(region: string, tocheck:string): Observable<any | null> {
+    const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
+    if (storedData) {
+      const launches = JSON.parse(storedData);
+      if (region === '' && tocheck==='') {
+        return of(launches || null);
+      } 
+      else if (region === '' && tocheck !== ''){
+        return this.getLaunchpadsByRegion(tocheck,region);
+      }
+      else {
+        const matchingLaunchpads = launches.filter((item: { region: string; }) => item.region.toLowerCase().startsWith(region.toLowerCase()));
+        return of(matchingLaunchpads || null);
+      }
+    }
+  
+    return of(null);
+  }
+  getLaunchpadsByName(name: string, tocheck:string): Observable<any | null> {
+    const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
+    
+    if (storedData) {
+      const launches = JSON.parse(storedData);
+  
+      if (name === '' && tocheck==='') {
+        return of(launches || null);
+      }
+      else if (name === '' && tocheck !== ''){
+        return this.getLaunchpadsByRegion(tocheck,name);
+      }
+      else {
+        const matchingLaunchpads = launches.filter((item: { name: any; }) => item.name.toLowerCase().startsWith(name.toLowerCase()));
+        return of(matchingLaunchpads || null);
+      }
+    }
+  
     return of(null);
   }
   

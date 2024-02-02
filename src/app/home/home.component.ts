@@ -17,7 +17,8 @@ import { DataPassingServiceService } from '../data-passing-service.service';
   
 })
 export class HomeComponent implements OnInit{
-  value = 'Clear me';
+  value = '';
+  value2 = '';
   pageSizeOptions: number[] = [1,2,3,4,5,6];
   panelOpenState = true;
   pagedLaunchpads2: any[] = []; 
@@ -91,14 +92,14 @@ export class HomeComponent implements OnInit{
         this.launches2 = launches;
       }
     );
-    console.log("Siema")
-    console.log(this.launchpads2)
 
     this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
       this.launchpads2 = launchpads;
       this.updatePagedLaunchpads(0); // Initialize with the first page
     });
   }
+
+
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     const startIndex = event.pageIndex * this.pageSize;
@@ -111,9 +112,24 @@ export class HomeComponent implements OnInit{
       startIndex,
       startIndex + this.pageSize
     );
-    console.log(this.pagedLaunchpads2)
   }
-  
-  
+  onKey(event: any) : void {
+    this.value = event.target.value;
+    this.dataService.getLaunchpadsByRegion(this.value, this.value2).subscribe((data: any[]) => {
+      this.launchpads2 = data;
+      this.updatePagedLaunchpads(0);
+    })
+  }
+  onKey2(event: any) : void {
+    this.value2 = event.target.value;
+    this.dataService.getLaunchpadsByName(this.value2, this.value).subscribe((data: any[]) => {
+      this.launchpads2 = data;
+      this.updatePagedLaunchpads(0);
+    })
+  }
 
+
+  updateLaunhpadsSearch(){
+
+  }
 }
