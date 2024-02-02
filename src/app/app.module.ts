@@ -23,6 +23,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import {MatTable, MatTableModule} from '@angular/material/table';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -50,9 +52,10 @@ import {MatTable, MatTableModule} from '@angular/material/table';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    MatTableModule
-
-    
+    MatTableModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

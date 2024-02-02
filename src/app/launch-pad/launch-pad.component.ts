@@ -49,6 +49,7 @@ export class LaunchPadComponent {
       }
     );
     this.dataSource = this.launches;
+    console.log(this.launchpad);
 
 
   }

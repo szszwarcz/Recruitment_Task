@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, delay, map, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataPassingServiceService {
-  private readonly LAUNCHPADS_STORAGE_KEY = 'launchpads';
-  private readonly LAUNCHES_STORAGE_KEY = 'launches';
-  private sharedLaunchpads :any;
-  private sharedLaunches :any;
+  private readonly LAUNCHPADS_STORAGE_KEY = 'launchpads3';
+  private readonly LAUNCHES_STORAGE_KEY = 'launches3';
   constructor() { 
 
   }
 
 
-  setSharedLaunchpads(launchpads: any): Observable<any> {
+  setSharedLaunchpads(launchpads: any[]): Observable<any> {
+
+    console.log('Setting launchpads:', launchpads);
+
     return of(null).pipe(
-      tap(() => localStorage.setItem(this.LAUNCHPADS_STORAGE_KEY, JSON.stringify(launchpads))),
+      tap(() => {
+        console.log('Inside tap block');
+        localStorage.setItem(this.LAUNCHPADS_STORAGE_KEY, JSON.stringify(launchpads));
+      }),
       catchError((error) => {
         console.error('Error saving launchpads:', error);
         return of(null);
       })
     );
   }
-
-  setSharedLaunches(launches: any): Observable<any> {
+  
+  setSharedLaunches(launches: any[]): Observable<any> {
     return of(null).pipe(
       tap(() => localStorage.setItem(this.LAUNCHES_STORAGE_KEY, JSON.stringify(launches))),
       catchError((error) => {
