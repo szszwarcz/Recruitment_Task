@@ -9,13 +9,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./launch-pad.component.css']
 })
 export class LaunchPadComponent {
+  index : number = 0;
   launchpadId:any;
   launchpad:any;
-  launchpads2 : any[] = [];
-  launchpads : any;
   launches2 : any[] = [];
+  filteredLaunches : any[] = [];
   launches : any;
   dataSource : any [] = [];
+  displayedColumns: string[] = ['no', 'name', 'date', 'details'];
 
 
   
@@ -24,12 +25,6 @@ export class LaunchPadComponent {
 
   ngOnInit(){
 
-    this.dataService.getSharedLaunchpads().subscribe(
-      (launchpads) => {
-        // Handle the retrieved launchpads data
-        this.launchpads2 = launchpads;
-      }
-    );
     this.dataService.getSharedLaunches().subscribe(
       (launches) => {
         this.launches2 = launches;
@@ -48,10 +43,19 @@ export class LaunchPadComponent {
         console.error('Error fetching launchpad:', error);
       }
     );
-    this.dataSource = this.launches;
-    console.log(this.launchpad);
+    this.filteredLaunches = this.launches2.filter(((item: { launchpad: any; }) => item.launchpad === this.launchpadId));
+    
+    this.dataSource = this.filteredLaunches;
+    console.log(this.filteredLaunches);
+    this.index = this.filteredLaunches.length;
+    this.removeEmptyRecords();
 
 
+  }
+  removeEmptyRecords() {
+    this.dataSource = this.dataSource.filter(element => 
+      element.name && element.date && element.details
+    );
   }
 
 }
