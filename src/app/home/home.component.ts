@@ -48,14 +48,7 @@ export class HomeComponent implements OnInit{
           status : item.status,
           wikiLink : " "
         }));
-      this.dataService.setSharedLaunchpads(launchpads).subscribe(
-        (result) => {
-          console.log('Observable executed successfully:', result);
-        },
-        (error) => {
-          console.error('Observable error:', error);
-        }
-      );
+      this.dataService.setSharedLaunchpads(launchpads).subscribe();
       })
 
       //Mapping and storing all data related to launches
@@ -73,14 +66,7 @@ export class HomeComponent implements OnInit{
         details: item.details,
         launchpad: item.launchpad
       }));
-      this.dataService.setSharedLaunches(launches).subscribe(
-        (result) => {
-          console.log('Observable executed successfully:', result);
-        },
-        (error) => {
-          console.error('Observable error:', error);
-        }
-      );
+      this.dataService.setSharedLaunches(launches).subscribe();
     })
 
     //Fetching launchpads data

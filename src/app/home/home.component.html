@@ -8,12 +8,12 @@
       <form class="example-form" fxLayoutAlign="start center">
         <mat-form-field class="example-form-field">
         <mat-label>Search by region</mat-label>
-        <input (keyup)="onKey($event)" matInput placeholder="Search by region" [(ngModel)]="value">
+        <input (keyup)="onKey($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by region" [(ngModel)]="value">
     
       </mat-form-field>
       <mat-form-field>
         <mat-label>Search by name</mat-label>
-        <input (keyup)="onKey2($event)" matInput placeholder="Search by name" [(ngModel)]="value2">
+        <input (keyup)="onKey2($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by name" [(ngModel)]="value2">
       </mat-form-field>
     </form>
     </div>
