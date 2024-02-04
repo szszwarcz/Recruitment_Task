@@ -1,9 +1,7 @@
-.responsive-img-container {
-    max-width: 100%;
-    height: auto;
-    overflow: hidden;
+.example-button-row {
+    display: table-cell;
+    max-width: 600px;
   }
-
-  .mat-grid-tile {
-    align-self: flex-start;
+  .example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 8px;
   }

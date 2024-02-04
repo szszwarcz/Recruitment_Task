@@ -18,7 +18,8 @@ import { DataPassingServiceService } from '../data-passing-service.service';
   
 })
 export class HomeComponent implements OnInit{
-  imgSize = 350;
+  rowHeight = 600;
+  imgSize = 400;
   cols: number = 3;
   value = '';
   value2 = '';
@@ -122,31 +123,60 @@ export class HomeComponent implements OnInit{
   }
   updateCols() {
     if (this.pageSize === 1) {
-      this.cols = 1;
-    } 
-    else {
       if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
         this.cols = 1;
+        this.imgSize = 350;
       } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
         this.cols = 1;
+        this.imgSize = 500;
       } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
-        this.cols = 2;
+        this.cols = 1;
+        this.imgSize = 600;
       } else if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
-          if (this.pageSize  === 2) {
-            this.cols = 2;
-          }
-          else{
-            this.cols = 3;
-          }
+        this.cols = 1;
+        this.imgSize = 600;
       } else if (this.breakpointObserver.isMatched(Breakpoints.XLarge)) {
-          if (this.pageSize  === 2) {
-            this.cols = 2;
-          }
-          else{
-            this.cols = 3;
-          }
+        this.cols = 1;
+        this.imgSize = 600;
       }
     }
+    else if (this.pageSize === 2){
+      if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
+        this.cols = 1;
+        this.imgSize = 350;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
+        this.cols = 1;
+        this.imgSize = 500;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
+        this.cols = 2;
+        this.imgSize = 400;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
+        this.cols = 2;
+        this.imgSize = 500;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.XLarge)) {
+        this.cols = 2;
+        this.imgSize = 500;
+      }
+    }
+    else if(this.pageSize >=3){
+      if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
+        this.cols = 1;
+        this.imgSize = 350;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
+        this.cols = 1;
+        this.imgSize = 500;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
+        this.cols = 2;
+        this.imgSize = 400;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
+        this.cols = 3;
+        this.imgSize = 350;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.XLarge)) {
+        this.cols = 3;
+        this.imgSize = 350;
+      }
+    }
+    this.rowHeight = this.imgSize+ 200;
     
   }
 
@@ -157,13 +187,13 @@ export class HomeComponent implements OnInit{
     
     if (this.pageSize === 1) {
       this.cols = 1;
-      this.imgSize = 600;
+      this.updateCols();
     } else if (this.pageSize  === 2) {
       this.cols = 2;
-      this.imgSize = 500;
+      this.updateCols();
     } else {
       this.cols = 3;
-      this.imgSize = 400;
+      this.updateCols();
     }
     
   }
