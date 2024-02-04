@@ -54,7 +54,7 @@ export class LaunchPadComponent {
   }
   removeEmptyRecords() {
     this.dataSource = this.dataSource.filter(element => 
-      element.name && element.date && element.details
+      element.name || element.date || element.details
     );
   }
 

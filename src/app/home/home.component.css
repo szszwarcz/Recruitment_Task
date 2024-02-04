@@ -1,0 +1,9 @@
+.responsive-img-container {
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .mat-grid-tile {
+    align-self: flex-start;
+  }

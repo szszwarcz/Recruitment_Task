@@ -1,6 +1,7 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ApiDataServiceService } from './../../../../SpaceX_Lunchpad/src/app/api-data-service.service';
 import { map } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
 import { PageEvent } from '@angular/material/paginator';
 import {MatFormFieldModule,} from '@angular/material/form-field';
@@ -17,6 +18,8 @@ import { DataPassingServiceService } from '../data-passing-service.service';
   
 })
 export class HomeComponent implements OnInit{
+  imgSize = 350;
+  cols: number = 3;
   value = '';
   value2 = '';
   pageSizeOptions: number[] = [1,2,3,4,5,6];
@@ -26,7 +29,7 @@ export class HomeComponent implements OnInit{
   launchpads2 : any[] = [];
   launches2 : any[] = [];
 
-  constructor(private apiDataService : ApiServiceService, private dataService:DataPassingServiceService){
+  constructor(private apiDataService : ApiServiceService, private dataService:DataPassingServiceService, private breakpointObserver: BreakpointObserver){
   }
 
   ngOnInit(): void {
@@ -97,13 +100,71 @@ export class HomeComponent implements OnInit{
       this.launchpads2 = launchpads;
       this.updatePagedLaunchpads(0); // Initialize with the first page
     });
+  
+    this.updateCols(); // Initial call to set the initial value
+
+    // Subscribe to window resize events
+    this.breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge
+    ]).subscribe(() => {
+      this.updateCols(); // Call the update function on resize
+    });
+  
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.updateCols(); // Call the update function on window resize
+  }
+  updateCols() {
+    if (this.pageSize === 1) {
+      this.cols = 1;
+    } 
+    else {
+      if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
+        this.cols = 1;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
+        this.cols = 1;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
+        this.cols = 2;
+      } else if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
+          if (this.pageSize  === 2) {
+            this.cols = 2;
+          }
+          else{
+            this.cols = 3;
+          }
+      } else if (this.breakpointObserver.isMatched(Breakpoints.XLarge)) {
+          if (this.pageSize  === 2) {
+            this.cols = 2;
+          }
+          else{
+            this.cols = 3;
+          }
+      }
+    }
+    
+  }
 
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     const startIndex = event.pageIndex * this.pageSize;
     this.updatePagedLaunchpads(startIndex);
+    
+    if (this.pageSize === 1) {
+      this.cols = 1;
+      this.imgSize = 600;
+    } else if (this.pageSize  === 2) {
+      this.cols = 2;
+      this.imgSize = 500;
+    } else {
+      this.cols = 3;
+      this.imgSize = 400;
+    }
     
   }
 

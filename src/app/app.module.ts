@@ -25,6 +25,7 @@ import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angul
 import {MatTable, MatTableModule} from '@angular/material/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
