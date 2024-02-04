@@ -1,3 +1,4 @@
+import { ApiServiceService } from './../api-service.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataPassingServiceService } from '../data-passing-service.service';
@@ -9,6 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./launch-pad.component.css']
 })
 export class LaunchPadComponent {
+  wikiLink : any;
   index : number = 0;
   launchpadId:any;
   launchpad:any;
@@ -21,7 +23,7 @@ export class LaunchPadComponent {
 
   
 
-  constructor(private route: ActivatedRoute, private dataService: DataPassingServiceService) { }
+  constructor(private route: ActivatedRoute, private dataService: DataPassingServiceService, private apiService : ApiServiceService) { }
 
   ngOnInit(){
 
@@ -50,12 +52,20 @@ export class LaunchPadComponent {
     this.index = this.filteredLaunches.length;
     this.removeEmptyRecords();
 
-
+    this.apiService.wikiSearch(this.getLast5Words(this.launchpad.full_name)).subscribe(data => {
+      this.wikiLink = data.query.search;
+    })
   }
   removeEmptyRecords() {
     this.dataSource = this.dataSource.filter(element => 
       element.name || element.date || element.details
     );
+  }
+
+  getLast5Words(inputString: string): string {
+    const words = inputString.split(' ');
+    const last5Words = words.slice(-5).join(' ');
+    return last5Words;
   }
 
 }

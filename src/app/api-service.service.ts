@@ -13,12 +13,12 @@ import { map } from 'rxjs/operators';
 export class ApiServiceService {
   private launchpadsUrl = 'https://api.spacexdata.com/v4/launchpads';
   private launchesUrl = 'https://api.spacexdata.com/v4/launches';
-
+  private googleSearchUrl = 'https://www.googleapis.com/customsearch/v1' 
   private url = 'https://en.wikipedia.org/w/api.php';
 
   constructor(private http : HttpClient) {}
 
-  wikiSearch(data:any){
+  wikiSearch(data:any): Observable<any>{
     return this.http.get(this.url,{
       params: {
         action: "query",
@@ -26,7 +26,7 @@ export class ApiServiceService {
         list: "search",
         srsearch: data,
         origin: '*',
-        srlimit: 10
+        srlimit: 1
       }
     })
   }

@@ -1,14 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { ApiDataServiceService } from './../../../../SpaceX_Lunchpad/src/app/api-data-service.service';
-import { map } from 'rxjs/operators';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
 import { PageEvent } from '@angular/material/paginator';
-import {MatFormFieldModule,} from '@angular/material/form-field';
-import { LaunchPad } from '../launch-pad';
-import { merge } from 'cheerio/lib/static';
-import { Launches } from '../launches';
-import { Router } from '@angular/router';
 import { DataPassingServiceService } from '../data-passing-service.service';
 
 @Component({
@@ -18,15 +11,17 @@ import { DataPassingServiceService } from '../data-passing-service.service';
   
 })
 export class HomeComponent implements OnInit{
+  wikiLinks :any[] = [];
   rowHeight = 600;
   imgSize = 400;
   cols: number = 3;
   value = '';
   value2 = '';
   pageSizeOptions: number[] = [1,2,3,4,5,6];
+  pageSize = 5; 
   panelOpenState = true;
   pagedLaunchpads2: any[] = []; 
-  pageSize = 5; 
+  
   launchpads2 : any[] = [];
   launches2 : any[] = [];
 
@@ -44,6 +39,7 @@ export class HomeComponent implements OnInit{
         name : any;
         region : any;
         status: any;
+        wikiLink: any;
       }) => ({
         full_name: item.full_name,
         launches: item.launches,
@@ -52,7 +48,8 @@ export class HomeComponent implements OnInit{
         id : item.id,
         name : item.name,
         region : item.region,
-        status : item.status
+        status : item.status,
+        wikiLink : " "
       }));
       this.dataService.setSharedLaunchpads(launchpads).subscribe(
         (result) => {
@@ -91,6 +88,9 @@ export class HomeComponent implements OnInit{
     this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
       this.launchpads2 = launchpads;
     });
+
+    console.log(this.wikiLinks);
+
     this.dataService.getSharedLaunches().subscribe(
       (launches) => {
         this.launches2 = launches;
@@ -114,7 +114,8 @@ export class HomeComponent implements OnInit{
     ]).subscribe(() => {
       this.updateCols(); // Call the update function on resize
     });
-  
+    
+    console.log(this.pagedLaunchpads2);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -128,16 +129,16 @@ export class HomeComponent implements OnInit{
         this.imgSize = 350;
       } else if (this.breakpointObserver.isMatched(Breakpoints.Small)) {
         this.cols = 1;
-        this.imgSize = 500;
+        this.imgSize = 550;
       } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
         this.cols = 1;
-        this.imgSize = 600;
+        this.imgSize = 550;
       } else if (this.breakpointObserver.isMatched(Breakpoints.Large)) {
         this.cols = 1;
-        this.imgSize = 600;
+        this.imgSize = 550;
       } else if (this.breakpointObserver.isMatched(Breakpoints.XLarge)) {
         this.cols = 1;
-        this.imgSize = 600;
+        this.imgSize = 550;
       }
     }
     else if (this.pageSize === 2){
@@ -195,7 +196,6 @@ export class HomeComponent implements OnInit{
       this.cols = 3;
       this.updateCols();
     }
-    
   }
 
   updatePagedLaunchpads(startIndex: number): void {
@@ -226,7 +226,6 @@ export class HomeComponent implements OnInit{
     }
   }
   
-  // Add a method to fetch the original data
   fetchData(): void {
     this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
       this.launchpads2 = launchpads;
