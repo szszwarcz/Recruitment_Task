@@ -19,7 +19,7 @@
     </div>
     <div class="col-6">
       <mat-paginator
-      [length]="launchpads2.length"
+      [length]="launchpads.length"
       [pageSize]="pageSize"
       [pageSizeOptions]="pageSizeOptions"
       (page)="onPageChange($event)"
@@ -27,7 +27,7 @@
     </div>
   </div>
 <mat-grid-list [cols]="cols" [rowHeight]="rowHeight+'px'" class="mat-grid-list">
-  <mat-grid-tile *ngFor="let item of pagedLaunchpads2">
+  <mat-grid-tile *ngFor="let item of pagedLaunchpads">
     <mat-card fxLayout="column" fxLayoutAlign="center center">
       <mat-card-header class="text-center" fxLayout="column" fxLayoutAlign="center center">
           <mat-card-title>{{ item.name }}</mat-card-title>
@@ -39,12 +39,9 @@
         <mat-card-content></mat-card-content>
         <mat-card-actions justify-content: center>
           <div class="example-button-row">
-            <button mat-raised-button [routerLink]="['/lauchpad-component']" [queryParams]="{ id: item.id }">More details</button>
-
-            
+            <button mat-raised-button [routerLink]="['/lauchpad-component']" [queryParams]="{ id: item.id }">More launchpad details</button>
           </div>
         </mat-card-actions>
-        
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>

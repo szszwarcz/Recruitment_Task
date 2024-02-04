@@ -11,7 +11,6 @@ import { DataPassingServiceService } from '../data-passing-service.service';
   
 })
 export class HomeComponent implements OnInit{
-  wikiLinks :any[] = [];
   rowHeight = 600;
   imgSize = 400;
   cols: number = 3;
@@ -19,16 +18,14 @@ export class HomeComponent implements OnInit{
   value2 = '';
   pageSizeOptions: number[] = [1,2,3,4,5,6];
   pageSize = 5; 
-  panelOpenState = true;
-  pagedLaunchpads2: any[] = []; 
-  
-  launchpads2 : any[] = [];
-  launches2 : any[] = [];
+  pagedLaunchpads: any[] = []; 
+  launchpads : any[] = [];
 
   constructor(private apiDataService : ApiServiceService, private dataService:DataPassingServiceService, private breakpointObserver: BreakpointObserver){
   }
 
   ngOnInit(): void {
+    //Mapping and storing all data related to launchpads
      this.apiDataService.getLaunchpadData().subscribe((firstApiResponse) => {
       const launchpads = firstApiResponse.map((item: {
         full_name: any;
@@ -40,17 +37,17 @@ export class HomeComponent implements OnInit{
         region : any;
         status: any;
         wikiLink: any;
-      }) => ({
-        full_name: item.full_name,
-        launches: item.launches,
-        img: item.images.large,
-        details: item.details,
-        id : item.id,
-        name : item.name,
-        region : item.region,
-        status : item.status,
-        wikiLink : " "
-      }));
+        }) => ({
+          full_name: item.full_name,
+          launches: item.launches,
+          img: item.images.large,
+          details: item.details,
+          id : item.id,
+          name : item.name,
+          region : item.region,
+          status : item.status,
+          wikiLink : " "
+        }));
       this.dataService.setSharedLaunchpads(launchpads).subscribe(
         (result) => {
           console.log('Observable executed successfully:', result);
@@ -59,8 +56,9 @@ export class HomeComponent implements OnInit{
           console.error('Observable error:', error);
         }
       );
-     })
+      })
 
+      //Mapping and storing all data related to launches
      this.apiDataService.getLaunchesData().subscribe((secondApiResponse) =>{
       const launches = secondApiResponse.map((item: {
         details: any;
@@ -85,24 +83,12 @@ export class HomeComponent implements OnInit{
       );
     })
 
+    //Fetching launchpads data
     this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
-      this.launchpads2 = launchpads;
+      this.launchpads = launchpads;
+      this.updatePagedLaunchpads(0);
+      this.updateColumnSizeInCards();
     });
-
-    console.log(this.wikiLinks);
-
-    this.dataService.getSharedLaunches().subscribe(
-      (launches) => {
-        this.launches2 = launches;
-      }
-    );
-
-    this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
-      this.launchpads2 = launchpads;
-      this.updatePagedLaunchpads(0); // Initialize with the first page
-    });
-  
-    this.updateCols(); // Initial call to set the initial value
 
     // Subscribe to window resize events
     this.breakpointObserver.observe([
@@ -112,17 +98,16 @@ export class HomeComponent implements OnInit{
       Breakpoints.Large,
       Breakpoints.XLarge
     ]).subscribe(() => {
-      this.updateCols(); // Call the update function on resize
+      this.updateColumnSizeInCards();
     });
-    
-    console.log(this.pagedLaunchpads2);
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    this.updateCols(); // Call the update function on window resize
+    this.updateColumnSizeInCards(); // Call the update function on window resize
   }
-  updateCols() {
+
+  updateColumnSizeInCards() {
     if (this.pageSize === 1) {
       if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
         this.cols = 1;
@@ -178,7 +163,6 @@ export class HomeComponent implements OnInit{
       }
     }
     this.rowHeight = this.imgSize+ 200;
-    
   }
 
   onPageChange(event: PageEvent): void {
@@ -188,48 +172,48 @@ export class HomeComponent implements OnInit{
     
     if (this.pageSize === 1) {
       this.cols = 1;
-      this.updateCols();
+      this.updateColumnSizeInCards();
     } else if (this.pageSize  === 2) {
       this.cols = 2;
-      this.updateCols();
+      this.updateColumnSizeInCards();
     } else {
       this.cols = 3;
-      this.updateCols();
+      this.updateColumnSizeInCards();
     }
   }
-
   updatePagedLaunchpads(startIndex: number): void {
-    this.pagedLaunchpads2 = this.launchpads2.slice(
+    this.pagedLaunchpads = this.launchpads.slice(
       startIndex,
       startIndex + this.pageSize
     );
   }
+  getLaunchpadsByNameAndRegion(): void {
+    if (this.value || this.value2) {
+      this.dataService.getLaunchpadsByNameAndRegion(this.value, this.value2).subscribe((data: any[]) => {
+        this.launchpads = data;
+        this.updatePagedLaunchpads(0);
+      });
+    } else {
+      this.updateLaunchpads();
+    }
+  }
+  
+  updateLaunchpads(): void {
+    this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
+      this.launchpads = launchpads;
+      this.updatePagedLaunchpads(0);
+    });
+  }
+
   onKey(event: any): void {
     this.value = event.target.value;
-    this.performSearch();
+    this.getLaunchpadsByNameAndRegion();
   }
   
   onKey2(event: any): void {
     this.value2 = event.target.value;
-    this.performSearch();
+    this.getLaunchpadsByNameAndRegion();
   }
   
-  performSearch(): void {
-    if (this.value || this.value2) {
-      this.dataService.getLaunchpadsByNameAndRegion(this.value, this.value2).subscribe((data: any[]) => {
-        this.launchpads2 = data;
-        this.updatePagedLaunchpads(0);
-      });
-    } else {
-      // If both fields are empty, fetch the original data
-      this.fetchData();
-    }
-  }
   
-  fetchData(): void {
-    this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
-      this.launchpads2 = launchpads;
-      this.updatePagedLaunchpads(0);
-    });
-  }
 }
