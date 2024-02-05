@@ -5,6 +5,14 @@ import { BehaviorSubject, Observable, catchError, delay, map, of, tap } from 'rx
   providedIn: 'root'
 })
 export class DataPassingServiceService {
+  getLaunchesStorageKey(): string {
+    return this.LAUNCHES_STORAGE_KEY;
+  }
+
+
+  getLaunchpadsStorageKey(): string {
+    return this.LAUNCHPADS_STORAGE_KEY;
+  }
   private readonly LAUNCHPADS_STORAGE_KEY = 'launchpads3';
   private readonly LAUNCHES_STORAGE_KEY = 'launches3';
   constructor() { 
@@ -44,7 +52,6 @@ export class DataPassingServiceService {
 
   getLaunchpadById(launchpadId: string): Observable<any | null> {
     const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
-    
     if (storedData) {
       const launches = JSON.parse(storedData);
       const launchpad = launches.find((item: { id: string; }) => item.id === launchpadId);
@@ -52,49 +59,10 @@ export class DataPassingServiceService {
     }
     return of(null);
   }
-
-  getLaunchpadsByRegion(region: string, tocheck:string): Observable<any | null> {
-    const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
-    if (storedData) {
-      const launches = JSON.parse(storedData);
-      if (region === '' && tocheck==='') {
-        return of(launches || null);
-      } 
-      else if (region === '' && tocheck !== ''){
-        return this.getLaunchpadsByRegion(tocheck,region);
-      }
-      else {
-        const matchingLaunchpads = launches.filter((item: { region: string; }) => item.region.toLowerCase().startsWith(region.toLowerCase()));
-        return of(matchingLaunchpads || null);
-      }
-    }
-  
-    return of(null);
-  }
-  getLaunchpadsByName(name: string, tocheck:string): Observable<any | null> {
-    const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
-    
-    if (storedData) {
-      const launches = JSON.parse(storedData);
-  
-      if (name === '' && tocheck==='') {
-        return of(launches || null);
-      }
-      else if (name === '' && tocheck !== ''){
-        return this.getLaunchpadsByRegion(tocheck,name);
-      }
-      else {
-        const matchingLaunchpads = launches.filter((item: { name: any; }) => item.name.toLowerCase().startsWith(name.toLowerCase()));
-        return of(matchingLaunchpads || null);
-      }
-    }
-  
-    return of(null);
-  }
   getLaunchpadsByNameAndRegion(region: string, name: string): Observable<any | null> {
     const storedData = localStorage.getItem(this.LAUNCHPADS_STORAGE_KEY);
   
-    if (storedData) {
+    if (storedData && storedData.length>0) {
       const launches = JSON.parse(storedData);
       if(region === '' && name === ''){
         return of(launches || null);
@@ -103,7 +71,6 @@ export class DataPassingServiceService {
         (name === '' || item.name.toLowerCase().startsWith(name.toLowerCase())) &&
         (region === '' || item.region.toLowerCase().startsWith(region.toLowerCase()))
       );
-  
       return of(matchingLaunchpads || null);
     }
   

@@ -16,7 +16,7 @@ export class LaunchPadComponent {
   isSlideToggleChecked = false;
   pageIndex = 0;
   index : number = 0;
-  pageSizeOptions: number[] = [10,20,30];
+  pageSizeOptions: number[] = [5,10,20,30];
   pageSize = 10; 
   wikiLink : any;
   loading: boolean = true;

@@ -177,6 +177,7 @@ export class HomeComponent implements OnInit{
       startIndex + this.pageSize
     );
   }
+  //value - region value2 - name
   getLaunchpadsByNameAndRegion(): void {
     if (this.value || this.value2) {
       this.dataService.getLaunchpadsByNameAndRegion(this.value, this.value2).subscribe((data: any[]) => {

@@ -17,72 +17,74 @@ describe('ApiServiceService', () => {
   });
 
   afterEach(() => {
-    // After each test, assert that there are no more pending requests
     httpTestingController.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  it('should make a Wikipedia API request for search', () => {
-    const searchData = 'some search term';
-    
-    // Mock response from the Wikipedia API
-    const mockResponse = {
-      query: {
-        search: [{
-          batchcomplete: "",
-          continue: {
-              sroffset: 10,
-              continue: "-||"
-          },
-          query: {
-              searchinfo: {
-                  totalhits: 210
-              },
-              search: [
-                  {
-                      ns: 0,
-                      title: "Craig Noone",
-                      pageid: 18846922,
-                      size: 22548,
-                      wordcount: 1771,
-                      snippet: "<span class=\"searchmatch\">Craig</span> Stephen <span class=\"searchmatch\">Noone</span> (born 17 November 1987) is an English professional footballer who plays as a winger for Bolton Wanderers. Born in Kirkby, he has also",
-                      timestamp: "2018-11-02T22:25:45Z"
-                  },
-                  {
-                      ns: 0,
-                      title: "Noone",
-                      pageid: 32906333,
-                      size: 553,
-                      wordcount: 64,
-                      snippet: "<span class=\"searchmatch\">Noone</span> is a surname that may refer to:  <span class=\"searchmatch\">Craig</span> <span class=\"searchmatch\">Noone</span> (born 1987), English football midfielder Jimmie <span class=\"searchmatch\">Noone</span> (1895–1944), American jazz clarinetist Kathleen",
-                      timestamp: "2015-08-16T05:16:17Z"
-                  }
-              ]
-          }
-      }]
-      }
-    };
-
-    // Make the Wikipedia API request
-    service.wikiSearch(searchData).subscribe(response => {
-      expect(response).toEqual(mockResponse);
-    });
-
-    // Expect a single request to the Wikipedia API with the specified parameters
-    const req = httpTestingController.expectOne(request => {
-      return (
-        request.url === service['url'] &&
-        request.params.get('action') === 'query' &&
-        request.params.get('format') === 'json' &&
-        request.params.get('list') === 'search' &&
-        request.params.get('srsearch') === searchData &&
-        request.params.get('srlimit') === '1'
-      );
-    });
-
+  describe('wikiSearch',()=>{
+    it('should make a Wikipedia API request for search', () => {
+      const searchData = 'some search term';
+      
+      // Mock response from the Wikipedia API
+      const mockResponse = {
+        query: {
+          search: [{
+            batchcomplete: "",
+            continue: {
+                sroffset: 10,
+                continue: "-||"
+            },
+            query: {
+                searchinfo: {
+                    totalhits: 210
+                },
+                search: [
+                    {
+                        ns: 0,
+                        title: "Craig Noone",
+                        pageid: 18846922,
+                        size: 22548,
+                        wordcount: 1771,
+                        snippet: "<span class=\"searchmatch\">Craig</span> Stephen <span class=\"searchmatch\">Noone</span> (born 17 November 1987) is an English professional footballer who plays as a winger for Bolton Wanderers. Born in Kirkby, he has also",
+                        timestamp: "2018-11-02T22:25:45Z"
+                    },
+                    {
+                        ns: 0,
+                        title: "Noone",
+                        pageid: 32906333,
+                        size: 553,
+                        wordcount: 64,
+                        snippet: "<span class=\"searchmatch\">Noone</span> is a surname that may refer to:  <span class=\"searchmatch\">Craig</span> <span class=\"searchmatch\">Noone</span> (born 1987), English football midfielder Jimmie <span class=\"searchmatch\">Noone</span> (1895–1944), American jazz clarinetist Kathleen",
+                        timestamp: "2015-08-16T05:16:17Z"
+                    }
+                ]
+            }
+        }]
+        }
+      };
+  
+      // Make the Wikipedia API request
+      service.wikiSearch(searchData).subscribe(response => {
+        expect(response).toEqual(mockResponse);
+      });
+  
+      // Expect a single request to the Wikipedia API with the specified parameters
+      const req = httpTestingController.expectOne(request => {
+        return (
+          request.url === service['url'] &&
+          request.params.get('action') === 'query' &&
+          request.params.get('format') === 'json' &&
+          request.params.get('list') === 'search' &&
+          request.params.get('srsearch') === searchData &&
+          request.params.get('srlimit') === '1'
+        );
+      });
+    })
+  })
+  
+  describe('getLaunchpadData',()=>{
     it('should make a request to get launchpad data', () => {
       // Mock response for launchpad data
       const mockLaunchpadData = [
@@ -145,7 +147,9 @@ describe('ApiServiceService', () => {
       // Respond with the mock data
       req.flush(mockLaunchpadData);
     });
-
+  })
+    
+  describe('getLaunchesData',()=>{
     it('should make a request to get launches data', () => {
       // Mock response for launches data
       const mockLaunchesData = [
@@ -299,7 +303,6 @@ describe('ApiServiceService', () => {
       // Respond with the mock data
       req.flush(mockLaunchesData);
     });
-    // Respond with the mock data
-    req.flush(mockResponse);
-  });
+  })
+    
 });
