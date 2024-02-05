@@ -1,0 +1,49 @@
+<div class="container-flex">
+  <div class="container-flex text-center p-3" >
+    <h1><strong>Spacex launchpads</strong></h1>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="row mt-3">
+    <div class="col-6">
+      <form class="example-form" fxLayoutAlign="start center">
+        <mat-form-field class="example-form-field">
+        <mat-label>Search by region</mat-label>
+        <input (keyup)="onKey($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by region" [(ngModel)]="value">
+    
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Search by name</mat-label>
+        <input (keyup)="onKey2($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by name" [(ngModel)]="value2">
+      </mat-form-field>
+    </form>
+    </div>
+    <div class="col-6">
+      <mat-paginator
+      [length]="launchpads.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      ></mat-paginator>
+    </div>
+  </div>
+<mat-grid-list [cols]="cols" [rowHeight]="rowHeight+'px'" class="mat-grid-list">
+  <mat-grid-tile *ngFor="let item of pagedLaunchpads">
+    <mat-card fxLayout="column" fxLayoutAlign="center center">
+      <mat-card-header class="text-center" fxLayout="column" fxLayoutAlign="center center">
+          <mat-card-title>{{ item.name }}</mat-card-title>
+          <mat-card-subtitle>Region: {{ item.region }}</mat-card-subtitle>
+          <mat-card-subtitle>Status: {{ item.status }}</mat-card-subtitle>
+        </mat-card-header>
+        <img   [ngStyle]="{ 'width.px': imgSize, 'height.px': imgSize }"
+         mat-card-image  src="{{ item.img }}" alt="Photo of a launchpad">
+        <mat-card-content></mat-card-content>
+        <mat-card-actions>
+          <div class="example-button-row">
+            <button mat-raised-button [routerLink]="['/lauchpad-component']" [queryParams]="{ id: item.id }">More launchpad details</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
