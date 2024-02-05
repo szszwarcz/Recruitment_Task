@@ -1,8 +1,8 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ApiServiceService } from '../api-service.service';
+import { ApiServiceService } from '../services/api-service.service';
 import { PageEvent } from '@angular/material/paginator';
-import { DataPassingServiceService } from '../data-passing-service.service';
+import { DataPassingServiceService } from '../services/data-passing-service.service';
 
 @Component({
   selector: 'app-home',

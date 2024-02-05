@@ -37,7 +37,7 @@
         <img   [ngStyle]="{ 'width.px': imgSize, 'height.px': imgSize }"
          mat-card-image  src="{{ item.img }}" alt="Photo of a launchpad">
         <mat-card-content></mat-card-content>
-        <mat-card-actions justify-content: center>
+        <mat-card-actions>
           <div class="example-button-row">
             <button mat-raised-button [routerLink]="['/lauchpad-component']" [queryParams]="{ id: item.id }">More launchpad details</button>
           </div>

@@ -27,6 +27,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatTableModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule,MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule,FlexLayoutModule
+    MatIconModule,MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule,FlexLayoutModule,MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

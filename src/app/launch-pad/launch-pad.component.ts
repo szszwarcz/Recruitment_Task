@@ -1,7 +1,7 @@
-import { ApiServiceService } from './../api-service.service';
+import { ApiServiceService } from '../services/api-service.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataPassingServiceService } from '../data-passing-service.service';
+import { DataPassingServiceService } from '../services/data-passing-service.service';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -19,7 +19,7 @@ export class LaunchPadComponent {
   pageSizeOptions: number[] = [10,20,30];
   pageSize = 10; 
   wikiLink : any;
-
+  loading: boolean = true;
   launchpadId:any;
   launchpad:any;
   launches : any[] = [];
@@ -32,6 +32,7 @@ export class LaunchPadComponent {
   constructor(private route: ActivatedRoute, private dataService: DataPassingServiceService, private apiService : ApiServiceService) { }
 
   ngOnInit(){
+
     //Fetching all launches
     this.dataService.getSharedLaunches().subscribe(
       (launches) => {
@@ -66,6 +67,9 @@ export class LaunchPadComponent {
     })
     this.dataSourceSaved = this.dataSource;
     this.updatePagedLaunches(0);
+    setTimeout(() => {
+      this.loading = false; // Set loading to false after the delay
+    }, 500);
   }
 
   onSlideToggleChange(event: MatSlideToggleChange): void {
