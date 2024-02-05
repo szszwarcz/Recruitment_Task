@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 export class ApiServiceService {
   private launchpadsUrl = 'https://api.spacexdata.com/v4/launchpads';
   private launchesUrl = 'https://api.spacexdata.com/v4/launches';
-  private googleSearchUrl = 'https://www.googleapis.com/customsearch/v1' 
   private url = 'https://en.wikipedia.org/w/api.php';
 
   constructor(private http : HttpClient) {}
