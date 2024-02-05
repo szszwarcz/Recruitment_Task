@@ -4,28 +4,32 @@
   </div>
   <mat-divider></mat-divider>
   <div class="row mt-3">
-    <div class="col-6">
+    <div class="col-lg-3 col-md-12 d-flex align-items-center justify-content-center">
       <form class="example-form" fxLayoutAlign="start center">
         <mat-form-field class="example-form-field">
-        <mat-label>Search by region</mat-label>
-        <input (keyup)="onKey($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by region" [(ngModel)]="value">
-    
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Search by name</mat-label>
-        <input (keyup)="onKey2($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by name" [(ngModel)]="value2">
-      </mat-form-field>
-    </form>
+          <mat-label>Search by region</mat-label>
+          <input (keyup)="onKey($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by region" [(ngModel)]="value">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Search by name</mat-label>
+          <input (keyup)="onKey2($event)" [ngModelOptions]="{standalone: true}" matInput placeholder="Search by name" [(ngModel)]="value2">
+        </mat-form-field>
+      </form>
     </div>
-    <div class="col-6">
+    <div class="col-lg-6 col-md-12 d-flex align-items-center justify-content-center">
+
+      
+    </div>
+    <div class="col-lg-3 col-md-12 d-flex align-items-center justify-content-center">
       <mat-paginator
-      [length]="launchpads.length"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="onPageChange($event)"
+        [length]="launchpads.length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChange($event)"
       ></mat-paginator>
     </div>
   </div>
+  
 <mat-grid-list [cols]="cols" [rowHeight]="rowHeight+'px'" class="mat-grid-list">
   <mat-grid-tile *ngFor="let item of pagedLaunchpads">
     <mat-card fxLayout="column" fxLayoutAlign="center center">

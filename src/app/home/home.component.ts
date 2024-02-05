@@ -37,6 +37,8 @@ export class HomeComponent implements OnInit{
         region : any;
         status: any;
         wikiLink: any;
+        latitude : any;
+        longitude : any;
         }) => ({
           full_name: item.full_name,
           launches: item.launches,
@@ -46,7 +48,9 @@ export class HomeComponent implements OnInit{
           name : item.name,
           region : item.region,
           status : item.status,
-          wikiLink : " "
+          wikiLink : " ",
+          longitude : item.longitude,
+          latitude : item.latitude
         }));
       this.dataService.setSharedLaunchpads(launchpads).subscribe();
       })
