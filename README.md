@@ -43,7 +43,7 @@ Alternatively, you can access the application via this link: [SpaceX Launchpad E
 Usage
 
 - Upon opening the application, you'll see a list of launchpads with basic information.
-- Use the pagination controls at the bottom to navigate through pages.
+- Use the pagination controls at the top to navigate through pages.
 - Use the filter input fields to search for launchpads by name or region.
 - Click on a launchpad's button to view more details, including launches associated with it.
 
