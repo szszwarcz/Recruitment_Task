@@ -14,8 +14,8 @@ export class HomeComponent implements OnInit{
   rowHeight = 600;
   imgSize = 400;
   cols: number = 3;
-  value = '';
-  value2 = '';
+  region = '';
+  name = '';
   pageSizeOptions: number[] = [1,2,3,4,5,6];
   pageSize = 5; 
   pagedLaunchpads: any[] = []; 
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    
     //Mapping and storing all data related to launchpads
      this.apiDataService.getLaunchpadData().subscribe((firstApiResponse) => {
       const launchpads = firstApiResponse.map((item: {
@@ -177,10 +178,10 @@ export class HomeComponent implements OnInit{
       startIndex + this.pageSize
     );
   }
-  //value - region value2 - name
+  //region - region name - name
   getLaunchpadsByNameAndRegion(): void {
-    if (this.value || this.value2) {
-      this.dataService.getLaunchpadsByNameAndRegion(this.value, this.value2).subscribe((data: any[]) => {
+    if (this.region || this.name) {
+      this.dataService.getLaunchpadsByNameAndRegion(this.region, this.name).subscribe((data: any[]) => {
         this.launchpads = data;
         this.updatePagedLaunchpads(0);
       });
@@ -196,13 +197,13 @@ export class HomeComponent implements OnInit{
     });
   }
 
-  onKey(event: any): void {
-    this.value = event.target.value;
+  onRegionInput(event: any): void {
+    this.region = event.target.value;
     this.getLaunchpadsByNameAndRegion();
   }
   
-  onKey2(event: any): void {
-    this.value2 = event.target.value;
+  onNameInput(event: any): void {
+    this.name = event.target.vlaue;
     this.getLaunchpadsByNameAndRegion();
   }
   

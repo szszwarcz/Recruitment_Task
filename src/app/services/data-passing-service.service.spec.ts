@@ -277,7 +277,7 @@ describe('DataPassingServiceService', () => {
   })
 
   describe('getLaunchpadByNameAndRegion',() => {
-    it('should return launchpad with matching name and with matching region', () => {
+    it('should return launchpads with matching name and with matching region', () => {
       const mockLaunchpads = [
         {
           full_name: 'Kennedy Space Center Launch Complex 39A',
@@ -328,6 +328,112 @@ describe('DataPassingServiceService', () => {
         expect(data).toEqual(launchpadToMatch);
       });
     }),
+    
+    it('should return launchpads with just matching name if the region is empty', () => {
+      const mockLaunchpads = [
+        {
+          full_name: 'Kennedy Space Center Launch Complex 39A',
+          details: 'Launch complex at Kennedy Space Center',
+          images: 'image1.jpg',
+          launches: ['launch3', 'launch4'],
+          id: 'ksc_lc_39a',
+          name: 'LC-39A',
+          region: 'Florida',
+          status: 'active',
+          wikiLink: 'https://example.com/ksc_lc_39a',
+          latitude: 28.56230196799018,
+          longitude: -80.57735647504738,
+        },
+        {
+          full_name: 'Vandenberg Space Force Base Space Launch Complex 4E',
+          details: 'Launch complex at Vandenberg Space Force Base',
+          images: 'image3.jpg',
+          launches: ['launch3', 'launch4'],
+          id: 'vafb_slc_4e',
+          name: 'SLC-4E',
+          region: 'California',
+          status: 'retired',
+          wikiLink: 'https://example.com/vafb_slc_4e',
+          latitude: 34.632093782287846,
+          longitude: -120.61082939941428,
+        },
+      ];
+      service.setSharedLaunchpads(mockLaunchpads).subscribe();
+
+      const nameToMatch = 'LC'
+      const regionToMatch = ''
+      const launchpadToMatch = [{
+        full_name: 'Kennedy Space Center Launch Complex 39A',
+        details: 'Launch complex at Kennedy Space Center',
+        images: 'image1.jpg',
+        launches: ['launch3', 'launch4'],
+        id: 'ksc_lc_39a',
+        name: 'LC-39A',
+        region: 'Florida',
+        status: 'active',
+        wikiLink: 'https://example.com/ksc_lc_39a',
+        latitude: 28.56230196799018,
+        longitude: -80.57735647504738,
+      }];
+
+      service.getLaunchpadsByNameAndRegion(regionToMatch, nameToMatch).subscribe(data => {
+        expect(data).toEqual(launchpadToMatch);
+      });
+    }),
+
+    it('should return launchpads with just matching region if the name is empty', () => {
+      const mockLaunchpads = [
+        {
+          full_name: 'Kennedy Space Center Launch Complex 39A',
+          details: 'Launch complex at Kennedy Space Center',
+          images: 'image1.jpg',
+          launches: ['launch3', 'launch4'],
+          id: 'ksc_lc_39a',
+          name: 'LC-39A',
+          region: 'Florida',
+          status: 'active',
+          wikiLink: 'https://example.com/ksc_lc_39a',
+          latitude: 28.56230196799018,
+          longitude: -80.57735647504738,
+        },
+        {
+          full_name: 'Vandenberg Space Force Base Space Launch Complex 4E',
+          details: 'Launch complex at Vandenberg Space Force Base',
+          images: 'image3.jpg',
+          launches: ['launch3', 'launch4'],
+          id: 'vafb_slc_4e',
+          name: 'SLC-4E',
+          region: 'California',
+          status: 'retired',
+          wikiLink: 'https://example.com/vafb_slc_4e',
+          latitude: 34.632093782287846,
+          longitude: -120.61082939941428,
+        },
+      ];
+      service.setSharedLaunchpads(mockLaunchpads).subscribe();
+
+      const nameToMatch = ''
+      const regionToMatch = 'Flo'
+      const launchpadToMatch = [{
+        full_name: 'Kennedy Space Center Launch Complex 39A',
+        details: 'Launch complex at Kennedy Space Center',
+        images: 'image1.jpg',
+        launches: ['launch3', 'launch4'],
+        id: 'ksc_lc_39a',
+        name: 'LC-39A',
+        region: 'Florida',
+        status: 'active',
+        wikiLink: 'https://example.com/ksc_lc_39a',
+        latitude: 28.56230196799018,
+        longitude: -80.57735647504738,
+      }];
+
+      service.getLaunchpadsByNameAndRegion(regionToMatch, nameToMatch).subscribe(data => {
+        expect(data).toEqual(launchpadToMatch);
+      });
+    }),
+
+    
 
     it('should return null when local storage is empty', () => {
       const mockLaunchpads : any[] = [];
