@@ -14,8 +14,8 @@ export class HomeComponent implements OnInit{
   rowHeight = 600;
   imgSize = 400;
   cols: number = 3;
-  region = '';
-  name = '';
+  region = "";
+  name = "";
   pageSizeOptions: number[] = [1,2,3,4,5,6];
   pageSize = 5; 
   pagedLaunchpads: any[] = []; 
@@ -55,24 +55,6 @@ export class HomeComponent implements OnInit{
         }));
       this.dataService.setSharedLaunchpads(launchpads).subscribe();
       })
-
-      //Mapping and storing all data related to launches
-     this.apiDataService.getLaunchesData().subscribe((secondApiResponse) =>{
-      const launches = secondApiResponse.map((item: {
-        details: any;
-        static_fire_date_utc: any;
-        name: any; 
-        id: any;
-        launchpad : any;
-          }) => ({
-        name: item.name,
-        id: item.id,
-        date: item.static_fire_date_utc,
-        details: item.details,
-        launchpad: item.launchpad
-      }));
-      this.dataService.setSharedLaunches(launches).subscribe();
-    })
 
     //Fetching launchpads data
     this.dataService.getSharedLaunchpads().subscribe((launchpads) => {
@@ -199,13 +181,14 @@ export class HomeComponent implements OnInit{
 
   onRegionInput(event: any): void {
     this.region = event.target.value;
+    console.log(this.region);
     this.getLaunchpadsByNameAndRegion();
   }
   
   onNameInput(event: any): void {
-    this.name = event.target.vlaue;
+    this.name = event.target.value;
+    console.log(this.name);
     this.getLaunchpadsByNameAndRegion();
   }
-  
   
 }

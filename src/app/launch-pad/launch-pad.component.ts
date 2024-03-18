@@ -34,12 +34,23 @@ export class LaunchPadComponent {
 
   ngOnInit(){
 
-    //Fetching all launches
-    this.dataService.getSharedLaunches().subscribe(
-      (launches) => {
-        this.launches = launches;
-      }
-    );
+    this.apiService.getLaunchesData().subscribe((secondApiResponse) =>{
+      const launches = secondApiResponse.map((item: {
+        details: any;
+        static_fire_date_utc: any;
+        name: any; 
+        id: any;
+        launchpad : any;
+          }) => ({
+        name: item.name,
+        id: item.id,
+        date: item.static_fire_date_utc,
+        details: item.details,
+        launchpad: item.launchpad
+      }));
+      this.dataService.setSharedLaunches(launches).subscribe();
+    })
+
 
     //Fetching launchpad id by route
     this.route.queryParams.subscribe(params => {

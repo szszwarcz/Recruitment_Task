@@ -67,13 +67,14 @@ export class DataPassingServiceService {
       if(region === '' && name === ''){
         return of(launches || null);
       }
-      const matchingLaunchpads = launches.filter((item: { name: string, region: string }) =>
-        (name === '' || item.name.toLowerCase().startsWith(name.toLowerCase())) &&
-        (region === '' || item.region.toLowerCase().startsWith(region.toLowerCase()))
-      );
+      const regexName = new RegExp(name, 'i');
+      const regexRegion = new RegExp(region, 'i');
+      const matchingLaunchpads = launches.filter((item: { name: string; region: string; }) =>
+      (name === '' || regexName.test(item.name)) &&
+      (region === '' || regexRegion.test(item.region))
+);
       return of(matchingLaunchpads || null);
     }
-  
     return of(null);
   }
   
